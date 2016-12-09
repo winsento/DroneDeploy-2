@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # read in image... opencv converts to numpy ndarray
-img = cv2.imread('images/IMG_6720.jpg')
+img = cv2.imread('images/IMG_6722.jpg')
 img = cv2.resize(img, (600, 800))   
 
 # convert image to gray scale
@@ -24,16 +24,25 @@ x,y,w,h = cv2.boundingRect(cnt)
 #cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
 
 
+rect = cv2.minAreaRect(cnt)
+box = cv2.boxPoints(rect)
+box = np.int0(box)
+cv2.drawContours(img,[box],0,(0,0,255),2)
+
 # method to find corners
-def find_rectangle_corners():
-	def max_x(pixel):
-		return pixel[0][0]
+def find_difference_in_rectangle():
+	# calculate approximate distance from the minAreaRect we found about to the points contouring the sheet of paper
+	# we use these numbers in conjunction with the pixel scale distance to tell how much our view of the paper is skewed
+	# this will tell us at what angle we are viewing the image
 
-	def max_y(pixel):
-		return pixel[0][0]
-	# these functions will be used to find the corners of the paper
+def find_pixel_scale():
+	# find center of barcode
+	# count number of pixels to edge of barcode
+	# this represents 4.4cm in our image
+	
 
-# once the corners are found we do the corresponding geometry to find how large the barcode appears in the image
+# we can use pixel scaling to tell us our distance from the barcode
+#	+ i.e. from the center of the barcode to the edge it is roughly 4.4cm we use those amount of pixels to scale the rest of the image
 # 	+ this value will tell us how far away we are
 # find 'skew' between the front of the paper and the back of the paper
 # 	+ this value in combination with our distance from the paper will tell us what angle we are looking at the paper from
